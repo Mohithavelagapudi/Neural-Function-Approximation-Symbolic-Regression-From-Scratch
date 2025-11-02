@@ -32,38 +32,42 @@ Core questions:
 
 ---
 ## Mathematical Foundations
-### 1. Linear Neuron (Single Layer)
-Forward: \( \hat{y} = x w + b \).  
-Loss (MSE): \( \mathcal{L} = \frac{1}{N} \sum_{i=1}^N (\hat{y}_i - y_i)^2 \).  
-Gradients: \( \partial_w = \frac{2}{N} \sum x_i (x_i w + b - y_i), \quad \partial_b = \frac{2}{N} \sum (x_i w + b - y_i) \).  
-Parameter update (learning rate \(\eta\)): \( w \leftarrow w - \eta \partial_w, \ b \leftarrow b - \eta \partial_b \).
 
-### 2. Multilayer Perceptron (MLP)
-Layer \( \ell \): pre-activation \( z^{(\ell)} = a^{(\ell-1)} W^{(\ell)} + b^{(\ell)} \).  
-Activation (tanh/ReLU/linear): \( a^{(\ell)} = \phi(z^{(\ell)}) \).  
-Output MSE loss identical form.  
-Backward (chain rule): For output gradient \( \delta^{(L)} = \frac{2}{N}(a^{(L)} - y) \). Hidden: \( \delta^{(\ell)} = (\delta^{(\ell+1)} W^{(\ell+1)T}) \odot \phi'(z^{(\ell)}) \).  
-Parameter gradients: \( \nabla_{W^{(\ell)}} = a^{(\ell-1)T} \delta^{(\ell)}, \ \nabla_{b^{(\ell)}} = \sum \delta^{(\ell)} \).
-
-### 3. Adam Optimizer (Per-parameter):
-Moments: \( m_t = \beta_1 m_{t-1} + (1-\beta_1) g_t \), \( v_t = \beta_2 v_{t-1} + (1-\beta_2) g_t^2 \).  
-Bias correction: \( \hat{m}_t = m_t/(1-\beta_1^t), \hat{v}_t = v_t/(1-\beta_2^t) \).  
-Update: \( \theta_t = \theta_{t-1} - \eta \hat{m}_t/(\sqrt{\hat{v}_t}+\epsilon) \).
-
-### 4. LASSO Sparse Symbolic Regression
-Objective: \( \min_{\alpha} \frac{1}{2}\|A \alpha - y\|_2^2 + \lambda \|\alpha\|_1 \).  
-Coordinate descent update (feature j): soft-threshold on \( z_j = \rho_j / \|A_j\|_2^2 \) where \( \rho_j = A_j^T (y - A \alpha + A_j \alpha_j) \).
-
-### 5. Manual LSTM Cell
-Concatenate hidden & input: \( h_{t-1} \Vert x_t \xrightarrow{} [i_t, f_t, g_t, o_t] \).  
-Gates: \( i_t = \sigma(W_i [h_{t-1}, x_t]), f_t = \sigma(W_f [...]), o_t = \sigma(W_o [...]), g_t = \tanh(W_g [...]) \).  
-State: \( c_t = f_t \odot c_{t-1} + i_t \odot g_t \), \( h_t = o_t \odot \tanh(c_t) \).  
-Regression head: \( y = \text{MLP}(h_T) \).
-
-### 6. Basis Engineering & Symbolic Distillation
-Basis matrix A includes columns: \(1, x, x^2, ..., x^d, \sin(x), \cos(x), e^{x}, e^{x/2}, ...\). Coefficients -> human-readable expression by thresholding small magnitudes.
+<p align="center">
+  <img src="images/image (39).png" alt="" width="1000"/>
+</p>
 
 ---
+
+<p align="center">
+  <img src="images/image (40).png" alt="" width="1000"/>
+</p>
+
+---
+
+<p align="center">
+  <img src="images/image (41).png" alt="" width="1000"/>
+</p>
+
+---
+
+<p align="center">
+  <img src="images/image (42).png" alt="" width="1000"/>
+</p>
+
+---
+
+<p align="center">
+  <img src="images/image (43).png" alt="" width="1000"/>
+</p>
+
+---
+<p align="center">
+  <img src="images/image (44).png" alt="" width="1000"/>
+</p>
+
+---
+
 ## Key Algorithms (Pseudocode)
 ### Single Neuron Training (MSE)
 ```python
